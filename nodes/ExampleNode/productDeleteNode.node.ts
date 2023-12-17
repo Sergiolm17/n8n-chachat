@@ -27,14 +27,6 @@ export class productDeleteNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Product Session',
-        name: 'productSession',
-        type: 'string',
-        default: 'im-local',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Product API',
-      },
-      {
         displayName: 'Product IDs',
         name: 'productIds',
         type: 'string',
@@ -50,19 +42,15 @@ export class productDeleteNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/productDelete';
     const token = credentials.token as string;
-
-    let item: INodeExecutionData;
+    const chatSession = credentials.session as string;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const productSession = this.getNodeParameter('productSession', itemIndex, 'im-local') as string;
         const productIds = this.getNodeParameter('productIds', itemIndex, '') as string;
 
         const headers = { Authorization: `Bearer ${token}` };
 
-        const data = { session: productSession, productIds: productIds.split(',').map((id) => id.trim()), // Split and trim to handle comma-separated IDs
+        const data = { session: chatSession, productIds: productIds.split(',').map((id) => id.trim()), // Split and trim to handle comma-separated IDs
         };
 
         const response = await axios.post(baseURL, data, { headers });

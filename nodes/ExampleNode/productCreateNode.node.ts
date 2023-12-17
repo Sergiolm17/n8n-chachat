@@ -27,14 +27,6 @@ export class productCreateNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Product Session',
-        name: 'productSession',
-        type: 'string',
-        default: 'im-local',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Product API',
-      },
-      {
         displayName: 'Product Name',
         name: 'productName',
         type: 'string',
@@ -114,14 +106,10 @@ export class productCreateNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/productCreate';
     const token = credentials.token as string;
-
-    let item: INodeExecutionData;
+    const chatSession = credentials.session as string;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const productSession = this.getNodeParameter('productSession', itemIndex, 'im-local') as string;
         const productName = this.getNodeParameter('productName', itemIndex, '') as string;
         const currency = this.getNodeParameter('currency', itemIndex, '') as string;
         const description = this.getNodeParameter('description', itemIndex, '') as string;
@@ -134,7 +122,7 @@ export class productCreateNode implements INodeType {
 
         const headers = { Authorization: `Bearer ${token}` };
 
-        const data = { session: productSession, product: {   name: productName,   currency,   description,   price,   url,   isHidden,   retailerId,   originCountryCode,   images: [     {       url: imageUrl,     },   ], },
+        const data = { session: chatSession, product: {   name: productName,   currency,   description,   price,   url,   isHidden,   retailerId,   originCountryCode,   images: [     {       url: imageUrl,     },   ], },
         };
 
         const response = await axios.post(baseURL, data, { headers });

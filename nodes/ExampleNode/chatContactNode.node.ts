@@ -27,14 +27,6 @@ export class chatContactNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Chat Session',
-        name: 'chatSession',
-        type: 'string',
-        default: 'im',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Chat API',
-      },
-      {
         displayName: 'Contact Vcard',
         name: 'contactVcard',
         type: 'string',
@@ -58,14 +50,11 @@ export class chatContactNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/send/contactVcard';
     const token = credentials.token as string;
+    const chatSession = credentials.session as string;
 
-    let item: INodeExecutionData;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const chatSession = this.getNodeParameter('chatSession', itemIndex, 'im') as string;
         const contactVcard = this.getNodeParameter('contactVcard', itemIndex, '') as string;
         const contactName = this.getNodeParameter('contactName', itemIndex, '') as string;
 

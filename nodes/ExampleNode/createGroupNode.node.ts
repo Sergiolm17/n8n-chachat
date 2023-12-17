@@ -27,18 +27,10 @@ export class createGroupNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Session',
-        name: 'session',
-        type: 'string',
-        default: 'im-local',
-        placeholder: 'Placeholder value',
-        description: 'The session for the API',
-      },
-      {
         displayName: 'Participants',
         name: 'participants',
-        type: 'string[]',
-        default: [],
+        type: 'string',
+        default: "",
         placeholder: 'Placeholder value',
         description: 'An array of phone numbers for participants in the group',
       },
@@ -58,20 +50,17 @@ export class createGroupNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/createGroup';
     const token = credentials.token as string;
+    const chatSession = credentials.session as string;
 
-    let item: INodeExecutionData;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const session = this.getNodeParameter('session', itemIndex, 'im-local') as string;
         const participants = this.getNodeParameter('participants', itemIndex, []) as string[];
         const groupName = this.getNodeParameter('groupName', itemIndex, '') as string;
 
         const headers = { Authorization: `Bearer ${token}` };
 
-        const data = { session, participants, name: groupName,
+        const data = { session:chatSession, participants, name: groupName,
         };
 
         const response = await axios.post(baseURL, data, { headers });

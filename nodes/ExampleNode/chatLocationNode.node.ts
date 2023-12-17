@@ -27,14 +27,6 @@ export class chatLocationNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Chat Session',
-        name: 'chatSession',
-        type: 'string',
-        default: 'im-local',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Chat API',
-      },
-      {
         displayName: 'Phone Number',
         name: 'phoneNumber',
         type: 'string',
@@ -74,14 +66,12 @@ export class chatLocationNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/send/location';
     const token = credentials.token as string;
+    const chatSession = credentials.session as string;
 
-    let item: INodeExecutionData;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
 
-        const chatSession = this.getNodeParameter('chatSession', itemIndex, 'im-local') as string;
         const phoneNumber = this.getNodeParameter('phoneNumber', itemIndex, '') as string;
         const latitude = this.getNodeParameter('latitude', itemIndex, 0) as number;
         const longitude = this.getNodeParameter('longitude', itemIndex, 0) as number;

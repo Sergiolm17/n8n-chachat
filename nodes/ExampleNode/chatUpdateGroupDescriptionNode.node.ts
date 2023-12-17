@@ -27,14 +27,6 @@ export class chatUpdateGroupDescriptionNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Chat Session',
-        name: 'chatSession',
-        type: 'string',
-        default: 'im-local',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Chat API',
-      },
-      {
         displayName: 'Group ID',
         name: 'groupId',
         type: 'string',
@@ -58,14 +50,11 @@ export class chatUpdateGroupDescriptionNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/updateGroupDescription';
     const token = credentials.token as string;
-
-    let item: INodeExecutionData;
+    const chatSession = credentials.session as string;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
 
-        const chatSession = this.getNodeParameter('chatSession', itemIndex, 'im-local') as string;
         const groupId = this.getNodeParameter('groupId', itemIndex, '120363199451260803@g.us') as string;
         const newDescription = this.getNodeParameter('newDescription', itemIndex, 'Cambio de descripción') as string;
 

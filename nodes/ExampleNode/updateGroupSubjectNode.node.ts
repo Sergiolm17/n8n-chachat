@@ -27,14 +27,6 @@ export class updateGroupSubjectNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Chat Session',
-        name: 'chatSession',
-        type: 'string',
-        default: 'im',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Chat API',
-      },
-      {
         displayName: 'Group ID',
         name: 'groupId',
         type: 'string',
@@ -58,14 +50,10 @@ export class updateGroupSubjectNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/updateGroupSubject';
     const token = credentials.token as string;
-
-    let item: INodeExecutionData;
+    const chatSession = credentials.session as string;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const chatSession = this.getNodeParameter('chatSession', itemIndex, 'im') as string;
         const groupId = this.getNodeParameter('groupId', itemIndex, '') as string;
         const newSubject = this.getNodeParameter('newSubject', itemIndex, '') as string;
 

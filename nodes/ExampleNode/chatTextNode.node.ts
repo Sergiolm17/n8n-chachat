@@ -27,14 +27,6 @@ export class chatTextNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Chat Session',
-        name: 'chatSession',
-        type: 'string',
-        default: 'im',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Chat API',
-      },
-      {
         displayName: 'Phone Number',
         name: 'phoneNumber',
         type: 'string',
@@ -56,16 +48,14 @@ export class chatTextNode implements INodeType {
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
     const items = this.getInputData();
     const credentials = await this.getCredentials('chatApiCredentialsApi');
+
     const baseURL = credentials.baseURL as string + '/v1/send/text';
     const token = credentials.token as string;
+    const chatSession = credentials.session as string;
 
-    let item: INodeExecutionData;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const chatSession = this.getNodeParameter('chatSession', itemIndex, 'im') as string;
         const phoneNumber = this.getNodeParameter('phoneNumber', itemIndex, '') as string;
         const text = this.getNodeParameter('text', itemIndex, '') as string;
 

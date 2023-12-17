@@ -3,7 +3,7 @@ import {
   INodeExecutionData,
   INodeType,
   INodeTypeDescription,
-  NodeOperationError,
+  NodeOperationError
 } from 'n8n-workflow';
 import axios from 'axios';
 
@@ -27,14 +27,6 @@ export class chatParticipantsUpdateNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Chat Session',
-        name: 'chatSession',
-        type: 'string',
-        default: 'im',
-        placeholder: 'Placeholder value',
-        description: 'The session for the Chat API',
-      },
-      {
         displayName: 'Group ID',
         name: 'groupId',
         type: 'string',
@@ -45,8 +37,8 @@ export class chatParticipantsUpdateNode implements INodeType {
       {
         displayName: 'Participants',
         name: 'participants',
-        type: 'string[]',
-        default: [],
+        type: 'string',
+        default: "",
         placeholder: 'Placeholder value',
         description: 'An array of phone numbers for the participants',
       },
@@ -66,14 +58,11 @@ export class chatParticipantsUpdateNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/updateParticipants';
     const token = credentials.token as string;
+    const chatSession = credentials.session as string;
 
-    let item: INodeExecutionData;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
-
-        const chatSession = this.getNodeParameter('chatSession', itemIndex, 'im') as string;
         const groupId = this.getNodeParameter('groupId', itemIndex, '') as string;
         const participants = this.getNodeParameter('participants', itemIndex, []) as string[];
         const action = this.getNodeParameter('action', itemIndex, 'promote') as string;

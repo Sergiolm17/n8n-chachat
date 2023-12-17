@@ -27,14 +27,6 @@ export class checkNumberNode implements INodeType {
     ],
     properties: [
       {
-        displayName: 'Validation Session',
-        name: 'validationSession',
-        type: 'string',
-        default: 'im-local',
-        placeholder: 'Placeholder value',
-        description: 'The session for the validation API',
-      },
-      {
         displayName: 'Phone Number',
         name: 'phoneNumber',
         type: 'string',
@@ -50,19 +42,16 @@ export class checkNumberNode implements INodeType {
     const credentials = await this.getCredentials('chatApiCredentialsApi');
     const baseURL = credentials.baseURL as string + '/v1/checkNumber';
     const token = credentials.token as string;
-
-    let item: INodeExecutionData;
+    const chatSession = credentials.session as string;
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        item = items[itemIndex];
 
-        const validationSession = this.getNodeParameter('validationSession', itemIndex, 'im-local') as string;
         const phoneNumber = this.getNodeParameter('phoneNumber', itemIndex, '') as string;
 
         const headers = { Authorization: `Bearer ${token}` };
 
-        const data = { session: validationSession, phoneNumber,
+        const data = { session: chatSession, phoneNumber,
         };
 
         const response = await axios.post(baseURL, data, { headers });

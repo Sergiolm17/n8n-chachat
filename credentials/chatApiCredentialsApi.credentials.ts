@@ -18,6 +18,13 @@ export class chatApiCredentialsApi implements ICredentialType {
 			typeOptions: { password: false },
 		},
 		{
+			displayName: 'Session',
+			name: 'session',
+			type: 'string',
+			default: '',
+			typeOptions: { password: false },
+		},
+		{
 			displayName: 'Token',
 			name: 'token',
 			type: 'string',
