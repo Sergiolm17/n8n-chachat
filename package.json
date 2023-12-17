@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-chachat",
 	"version": "0.1.0",
-	"description": "",
+	"description": "Packete de nodes para n8n",
 	"keywords": [
 		"n8n-community-node-package"
 	],
@@ -33,18 +33,18 @@
 			"dist/credentials/chatApiCredentialsApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/ExampleNode/chatContactNode.node.js",
-			"dist/nodes/ExampleNode/chatFileNode.node.js",
-			"dist/nodes/ExampleNode/chatLocationNode.node.js",
-			"dist/nodes/ExampleNode/chatParticipantsUpdateNode.node.js",
-			"dist/nodes/ExampleNode/chatTextNode.node.js",
-			"dist/nodes/ExampleNode/chatUpdateGroupDescriptionNode.node.js",
-			"dist/nodes/ExampleNode/chatVoiceNode.node.js",
-			"dist/nodes/ExampleNode/checkNumberNode.node.js",
-			"dist/nodes/ExampleNode/createGroupNode.node.js",
-			"dist/nodes/ExampleNode/productCreateNode.node.js",
-			"dist/nodes/ExampleNode/productDeleteNode.node.js",
-			"dist/nodes/ExampleNode/updateGroupSubjectNode.node.js"
+			"dist/nodes/ContactNode/ContactNode.node.js",
+			"dist/nodes/FileNode/FileNode.node.js",
+			"dist/nodes/LocationNode/LocationNode.node.js",
+			"dist/nodes/ParticipantsUpdateNode/ParticipantsUpdateNode.node.js",
+			"dist/nodes/TextNode/TextNode.node.js",
+			"dist/nodes/UpdateGroupDescriptionNode/UpdateGroupDescriptionNode.node.js",
+			"dist/nodes/VoiceNode/VoiceNode.node.js",
+			"dist/nodes/CheckNode/CheckNode.node.js",
+			"dist/nodes/CreateGroupNode/CreateGroupNode.node.js",
+			"dist/nodes/ProductCreateNode/ProductCreateNode.node.js",
+			"dist/nodes/ProductDeleteNode/ProductDeleteNode.node.js",
+			"dist/nodes/UpdateGroupSubjectNode/UpdateGroupSubjectNode.node.js"
 		]
 	},
 	"devDependencies": {
