@@ -43,12 +43,11 @@ export class VoiceNode implements INodeType {
 				description: 'The URL of the voice message for the Chat API',
 			},
 			{
-				displayName: 'MIME Type',
-				name: 'mimeType',
-				type: 'string',
-				default: 'audio/mp4',
+				displayName: 'PTT',
+				name: 'ptt',
+				type: 'boolean',
+				default: true,
 				placeholder: 'Placeholder value',
-				description: 'The MIME type of the voice message for the Chat API',
 			},
 		],
 	};
@@ -58,20 +57,33 @@ export class VoiceNode implements INodeType {
 		const credentials = await this.getCredentials('chatApiCredentialsApi');
 		const baseURL = (credentials.baseURL as string) + '/v1/send/voice';
 		const token = credentials.token as string;
-		const chatSession = credentials.session as string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
 				const phoneNumber = this.getNodeParameter('phoneNumber', itemIndex, '') as string;
 				const voiceUrl = this.getNodeParameter('voiceUrl', itemIndex, '') as string;
-				const mimeType = this.getNodeParameter('mimeType', itemIndex, 'audio/mp4') as string;
+				const ptt = this.getNodeParameter('ptt', itemIndex, 'audio/mp4') as string;
 
-				const headers = { Authorization: `Bearer ${token}` };
-
-				const data = { session: chatSession, phoneNumber, url: voiceUrl, mimetype: mimeType };
-
-				const response = await axios.post(baseURL, data, { headers });
-
+				let data = JSON.stringify({
+					jid: phoneNumber,
+					type: 'number',
+					message: {
+						audio: {
+							url: voiceUrl,
+						},
+						ptt: ptt,
+					},
+				});
+				const response = await axios.request({
+					method: 'post',
+					maxBodyLength: Infinity,
+					url: baseURL + '/messages/send',
+					headers: {
+						'Content-Type': 'application/json',
+						'x-api-key': token,
+					},
+					data: data,
+				});
 				// Return the response data for successful requests
 				return this.prepareOutputData([{ json: response.data }]);
 			} catch (error) {

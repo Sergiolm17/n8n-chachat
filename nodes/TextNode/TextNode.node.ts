@@ -51,18 +51,30 @@ export class TextNode implements INodeType {
 
 		const baseURL = (credentials.baseURL as string) + '/v1/send/text';
 		const token = credentials.token as string;
-		const chatSession = credentials.session as string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
 				const phoneNumber = this.getNodeParameter('phoneNumber', itemIndex, '') as string;
 				const text = this.getNodeParameter('text', itemIndex, '') as string;
 
-				const headers = { Authorization: `Bearer ${token}` };
+				let data = JSON.stringify({
+					jid: phoneNumber,
+					type: 'number',
+					message: {
+						text,
+					},
+				});
 
-				const data = { session: chatSession, phoneNumber, text };
-
-				const response = await axios.post(baseURL, data, { headers });
+				const response = await axios.request({
+					method: 'post',
+					maxBodyLength: Infinity,
+					url: baseURL + '/messages/send',
+					headers: {
+						'Content-Type': 'application/json',
+						'x-api-key': token,
+					},
+					data: data,
+				});
 
 				// Return the response data for successful requests
 				return this.prepareOutputData([{ json: response.data }]);

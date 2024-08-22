@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-chachat",
-	"version": "0.1.0",
+	"version": "0.2.1",
 	"description": "Packete de nodes para n8n",
 	"keywords": [
 		"n8n-community-node-package"
@@ -28,7 +28,7 @@
 		"dist"
 	],
 	"n8n": {
-		"n8nNodesApiVersion": 1,
+		"n8nNodesApiVersion": 2,
 		"credentials": [
 			"dist/credentials/chatApiCredentialsApi.credentials.js"
 		],

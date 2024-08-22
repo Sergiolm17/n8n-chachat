@@ -58,7 +58,6 @@ export class FileNode implements INodeType {
 		const credentials = await this.getCredentials('chatApiCredentialsApi');
 		const baseURL = (credentials.baseURL as string) + '/v1/send/file';
 		const token = credentials.token as string;
-		const chatSession = credentials.session as string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
@@ -66,12 +65,28 @@ export class FileNode implements INodeType {
 				const fileUrl = this.getNodeParameter('fileUrl', itemIndex, '') as string;
 				const mimeType = this.getNodeParameter('mimeType', itemIndex, '') as string;
 
-				const headers = { Authorization: `Bearer ${token}` };
+				let data = JSON.stringify({
+					jid: phoneNumber,
+					type: 'number',
+					message: {
+						fileName: 'documento.pdf',
+						mimetype: mimeType,
+						document: {
+							url: fileUrl,
+						},
+					},
+				});
 
-				const data = { session: chatSession, phoneNumber, url: fileUrl, mimetype: mimeType };
-
-				const response = await axios.post(baseURL, data, { headers });
-
+				const response = await axios.request({
+					method: 'post',
+					maxBodyLength: Infinity,
+					url: baseURL + '/messages/send',
+					headers: {
+						'Content-Type': 'application/json',
+						'x-api-key': token,
+					},
+					data: data,
+				});
 				// Return the response data for successful requests
 				return this.prepareOutputData([{ json: response.data }]);
 			} catch (error) {
